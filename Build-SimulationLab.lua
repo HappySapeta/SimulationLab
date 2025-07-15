@@ -31,3 +31,4 @@ linkoptions
 OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 
 include "Projects/WelcomeProject/Build-WelcomeProject.lua"
+include "Projects/Alpha/Build-Alpha.lua"
