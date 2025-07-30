@@ -6,7 +6,7 @@ constexpr uint16_t WindowHeight = 720;
 
 int main()
 {
-    InitWindow(1280, 720, "Welcome!");
+    InitWindow(WindowWidth, WindowHeight, "Welcome!");
     while (!WindowShouldClose())
     {
         PollInputEvents();
