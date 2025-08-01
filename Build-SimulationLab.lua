@@ -10,7 +10,7 @@ configurations
 
 startproject "WelcomeProject"
 
-files { "Projects/Common/**.h" }
+files { "Source/**.h", "Source/**.cpp" }
 
 --Workspace-wide build options for MSVC
 filter "system:windows"
@@ -31,3 +31,4 @@ linkoptions
 OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 
 include "Projects/WelcomeProject/Build-WelcomeProject.lua"
+include "Projects/SteeringBehaviors/Build-SteeringBehaviors.lua"
