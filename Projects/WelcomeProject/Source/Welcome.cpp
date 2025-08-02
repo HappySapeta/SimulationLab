@@ -1,8 +1,5 @@
-#include <iostream>
 #include <raylib/raylib.h>
-
-constexpr uint16_t SL_WINDOW_WIDTH = 1280;
-constexpr uint16_t SL_WINDOW_HEIGHT = 720;
+#include "Core/WindowConfiguration.h"
 
 int main()
 {

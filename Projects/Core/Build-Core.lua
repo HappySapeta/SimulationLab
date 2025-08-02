@@ -1,5 +1,5 @@
-project "<PROJECT_NAME>"
-kind "ConsoleApp"
+project "Core"
+kind "StaticLib"
 language "C++"
 cppdialect "C++20"
 targetdir "Binaries/%{cfg.buildcfg}"
@@ -14,20 +14,17 @@ files
 includedirs
 {
     "Include/",
-    "../Core/Include",
-    "../../ThirdParty/Raylib/Include/",
 }
 
 links
 {
     "raylib",
-    "WinMM",
-	 "Core"
+    "WinMM"
 }
 
 libdirs
 {
-    "../../ThirdParty/Raylib"
+    "../../ThirdParty/Raylib"    
 }
 
 targetdir("../Binaries/" .. OutputDir .. "/%{prj.name}")
