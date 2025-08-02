@@ -14,19 +14,20 @@ files
 includedirs
 {
     "Include/",
-    "../Common/",
+    "../Core/Include",
     "../../ThirdParty/Raylib/Include/",
 }
 
 links
 {
     "raylib",
-    "WinMM"
+    "WinMM",
+	 "Core"
 }
 
 libdirs
 {
-    "../../ThirdParty/Raylib"    
+    "../../ThirdParty/Raylib"
 }
 
 targetdir("../Binaries/" .. OutputDir .. "/%{prj.name}")

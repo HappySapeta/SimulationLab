@@ -1,6 +1,5 @@
-#include <iostream>
 #include <raylib/raylib.h>
-#include <Common/WindowConfiguration.h>
+#include "Core/WindowConfiguration.h"
 
 int main()
 {

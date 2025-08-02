@@ -14,14 +14,15 @@ files
 includedirs
 {
     "Include/",
-    "../../Source/",
+	 "../Core/Include/",
     "../../ThirdParty/Raylib/Include/",
 }
 
 links
 {
     "raylib",
-    "WinMM"
+    "WinMM",
+	 "Core"
 }
 
 libdirs

@@ -1,5 +1,5 @@
-project "SteeringBehaviors"
-kind "ConsoleApp"
+project "Core"
+kind "StaticLib"
 language "C++"
 cppdialect "C++20"
 targetdir "Binaries/%{cfg.buildcfg}"
@@ -14,8 +14,6 @@ files
 includedirs
 {
     "Include/",
-    "../../Source/",
-    "../../ThirdParty/Raylib/Include/",
 }
 
 links
