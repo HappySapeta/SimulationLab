@@ -7,11 +7,6 @@ int main()
     while (!WindowShouldClose())
     {
         PollInputEvents();
-        if (IsKeyPressed(KEY_ESCAPE))
-        {
-            CloseWindow();
-        }
-        
         BeginDrawing();
         {
             ClearBackground(LIGHTGRAY);

@@ -20,8 +20,6 @@ includedirs
 
 links
 {
-    "raylib",
-    "WinMM",
 	 "Core"
 }
 
