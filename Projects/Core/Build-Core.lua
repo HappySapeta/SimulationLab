@@ -5,26 +5,24 @@ cppdialect "C++20"
 targetdir "Binaries/%{cfg.buildcfg}"
 staticruntime "off"
 
-files
-{
+files {
     "Include/**.h",
     "Source/**.cpp"
 }
 
-includedirs
-{
+includedirs {
     "Include/",
+    "../../ThirdParty/GLM/Include",
+    "../../ThirdParty/Raylib/Include"
 }
 
-links
-{
+links {
     "raylib",
     "WinMM"
 }
 
-libdirs
-{
-    "../../ThirdParty/Raylib"    
+libdirs {
+    "../../ThirdParty/Raylib"
 }
 
 targetdir("../Binaries/" .. OutputDir .. "/%{prj.name}")
