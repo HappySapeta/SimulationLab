@@ -1,4 +1,4 @@
-project "WelcomeProject"
+project "SteeringBehaviors"
 kind "ConsoleApp"
 language "C++"
 cppdialect "C++20"
@@ -14,18 +14,21 @@ files
 includedirs
 {
     "Include/",
-	 "../Core/Include/",
-    "../../ThirdParty/Raylib/Include/"
+    "../Core/Include",
+    "../../ThirdParty/Raylib/Include/",
+	 "../../ThirdParty/GLM/Include/"
 }
 
 links
 {
+    "raylib",
+    "WinMM",
 	 "Core"
 }
 
 libdirs
 {
-    "../../ThirdParty/Raylib"    
+    "../../ThirdParty/Raylib"
 }
 
 targetdir("../Binaries/" .. OutputDir .. "/%{prj.name}")

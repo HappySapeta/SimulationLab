@@ -12,8 +12,8 @@ files {
 
 includedirs {
     "Include/",
-    "../../ThirdParty/GLM/Include",
-    "../../ThirdParty/Raylib/Include"
+    "../../ThirdParty/GLM/Include/",
+    "../../ThirdParty/Raylib/Include/"
 }
 
 links {
