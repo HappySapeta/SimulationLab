@@ -5,9 +5,10 @@
 int main()
 {
     Agent Agent;
-    Agent.Position = {200,200};
-    Agent.Size = 10.0f;
-    Agent.Velocity = {10,10};
+    Agent.SetPosition({0, 0});
+    Agent.SetSize(50.0f);
+
+    float Value = 0.0f;
     InitWindow(SL_WINDOW_WIDTH, SL_WINDOW_HEIGHT, "Steering Behaviors");
     while (!WindowShouldClose())
     {
@@ -15,8 +16,12 @@ int main()
         ClearBackground(LIGHTGRAY);
         BeginDrawing();
         {
-            Agent.Update(GetFrameTime());
+            const float DeltaTime = GetFrameTime();
+            Agent.AddForce({50, Value});
+            Agent.Update(DeltaTime);
             Agent.Draw();
+
+            Value += DeltaTime * 50;
         }
         EndDrawing();
     }

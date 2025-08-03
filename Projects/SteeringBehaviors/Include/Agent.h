@@ -10,13 +10,19 @@ static Vec2 Vertices[]
 	{-0.6f,  0.8f},
 };
 
-struct Agent
+class Agent
 {
+public:
 	Agent();
 	void Draw();
 	void Update(const float DeltaTime);
 	void Reset();
-	
+
+	void AddForce(const Vec2& Force);
+	void SetPosition(const Vec2& NewPosition);
+	void SetSize(const float NewSize);
+
+private:
 	Vec2 Position;
 	Vec2 Velocity;
 	Vec2 NetForce;

@@ -55,6 +55,18 @@ namespace SL
 		constexpr Vec2 operator+(const Vec2& Other) const { return {x + Other.x, y + Other.y}; }
 		constexpr Vec2 operator-(const Vec2& Other) const { return {x - Other.x, y - Other.y}; }
 		constexpr Vec2 operator-() const { return {-x, -y}; }
+
+		constexpr void operator+=(const Vec2& Other)
+		{
+			x += Other.x;
+			y += Other.y;
+		}
+
+		constexpr void operator-=(const Vec2& Other)
+		{
+			x -= Other.x;
+			y -= Other.y;
+		}
 		
 		constexpr Vec2 operator*(const float Scalar) const { return {x * Scalar, y * Scalar}; }
 		constexpr friend Vec2 operator*(const float Scalar, const Vec2& Vector) { return Vector.operator*(Scalar); }
@@ -173,6 +185,20 @@ namespace SL
 		constexpr Vec3 operator+(const Vec3& Other) const { return {x + Other.x, y + Other.y, z + Other.z}; }
 		constexpr Vec3 operator-(const Vec3& Other) const { return {x - Other.x, y - Other.y, z - Other.z}; }
 		constexpr Vec3 operator-() const { return {-x, -y, -z}; }
+
+		constexpr void operator+=(const Vec3& Other)
+		{
+			x += Other.x;
+			y += Other.y;
+			z += Other.z;
+		}
+
+		constexpr void operator-=(const Vec3& Other)
+		{
+			x -= Other.x;
+			y -= Other.y;
+			z -= Other.z;
+		}
 
 		constexpr Vec3 operator*(const float Scalar) const { return {x * Scalar, y * Scalar, z * Scalar}; }
 		constexpr friend Vec3 operator*(const float Scalar, const Vec3& Vector) { return Vector.operator*(Scalar);}

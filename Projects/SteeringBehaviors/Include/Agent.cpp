@@ -31,8 +31,24 @@ void Agent::Reset()
 	Size = 1.0f;
 }
 
+void Agent::AddForce(const Vec2& Force)
+{
+	NetForce += Force;
+}
+
+void Agent::SetPosition(const Vec2& NewPosition)
+{
+	Position = NewPosition;
+}
+
+void Agent::SetSize(const float NewSize)
+{
+	Size = NewSize;
+}
+
 void Agent::Update(const float DeltaTime)
 {
 	Velocity = Velocity + NetForce * DeltaTime;
 	Position = Position + Velocity * DeltaTime;
+	NetForce = {0, 0};
 }
