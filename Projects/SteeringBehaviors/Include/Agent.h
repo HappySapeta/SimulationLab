@@ -15,12 +15,14 @@ class Agent
 {
 public:
 	Agent();
+	Agent(const Vec2& StartingPosition, const Vec2& StartingVelocity);
+	
 	void Draw();
 	void Update(const float DeltaTime);
 	void Reset();
 
+private:
 	void AddForce(const Vec2& Force);
-	void SetPosition(const Vec2& NewPosition);
 
 private:
 	Vec2 Position_;

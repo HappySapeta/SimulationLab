@@ -6,6 +6,10 @@ Agent::Agent()
 	: Position_(0,0), Velocity_(0,0), NetForce_(0,0)
 {}
 
+Agent::Agent(const Vec2& StartingPosition, const Vec2& StartingVelocity)
+	: Position_(StartingPosition), Velocity_(StartingVelocity)
+{}
+
 void Agent::Draw()
 {
 	const Vec2 Direction = Velocity_.GetNormal();
@@ -34,11 +38,6 @@ void Agent::Reset()
 void Agent::AddForce(const Vec2& Force)
 {
 	NetForce_ += Force;
-}
-
-void Agent::SetPosition(const Vec2& NewPosition)
-{
-	Position_ = NewPosition;
 }
 
 void Agent::Update(const float DeltaTime)
