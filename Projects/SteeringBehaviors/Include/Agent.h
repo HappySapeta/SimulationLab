@@ -21,11 +21,9 @@ public:
 
 	void AddForce(const Vec2& Force);
 	void SetPosition(const Vec2& NewPosition);
-	void SetSize(const float NewSize);
 
 private:
 	Vec2 Position_;
 	Vec2 Velocity_;
 	Vec2 NetForce_;
-	float Size_;
 };
