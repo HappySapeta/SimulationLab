@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <vector>
 #include "Core/Vector.h"
 
 using Vec2 = SL::Vec2;
@@ -23,8 +24,8 @@ public:
 	void SetSize(const float NewSize);
 
 private:
-	Vec2 Position;
-	Vec2 Velocity;
-	Vec2 NetForce;
-	float Size;
+	Vec2 Position_;
+	Vec2 Velocity_;
+	Vec2 NetForce_;
+	float Size_;
 };
