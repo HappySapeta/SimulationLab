@@ -20,7 +20,8 @@ includedirs
 
 links
 {
-	 "Core"
+    "raylib", 
+    "Core"
 }
 
 libdirs
