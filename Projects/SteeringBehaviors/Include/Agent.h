@@ -21,9 +21,10 @@ public:
 	void Update(const float DeltaTime);
 	virtual void Draw();
 	void Reset();
-
+	
 	Vec2 GetVelocity() const { return Velocity_; }
 	Vec2 GetPosition() const { return Position_; }
+	void SetPosition(const Vec2& Position) { Position_ = Position; }
 
 protected:
 	Vec2 Position_;

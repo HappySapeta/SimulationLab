@@ -15,7 +15,6 @@ public:
 
 	ETargetType GetTargetType() const { return TargetType_; }
 	void SetTargetType(const ETargetType Type) { TargetType_ = Type; }
-	void SetPosition(const Vec2& Position) { Position_ = Position; }
 	void SetVelocity(const Vec2& Velocity) { Velocity_ = Velocity; }
 
 private:

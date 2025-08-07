@@ -4,20 +4,21 @@
 
 #include <cassert>
 
-void AgentManager::Initialize()
+void BehaviorDeleter::operator()(SteeringBehaviorBase* Ptr)
 {
-	Target_.SetPosition({SL_WINDOW_WIDTH / 2, SL_WINDOW_HEIGHT / 2});
-	Target_.SetVelocity({0,0});
+	delete Ptr;
+}
+
+AgentManager::AgentManager(const Vec2& Bounds)
+	: CurrentBehaviorIndex_(EBehaviorIndex::SEEK), CurrentBehavior_(nullptr), Bounds_(Bounds)
+{
+	Target_.SetPosition({0,0});
+	Target_.SetVelocity({150,150});
 	Target_.SetTargetType(ETargetType::SEEK);
 
 	Behaviors_.insert({EBehaviorIndex::SEEK, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new SeekBehavior())});
 	Behaviors_.insert({EBehaviorIndex::FLEE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new FleeBehavior())});
 	Behaviors_.insert({EBehaviorIndex::INTERCEPT, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new InterceptBehavior())});
-}
-
-void BehaviorDeleter::operator()(SteeringBehaviorBase* Ptr)
-{
-	delete Ptr;
 }
 
 void AgentManager::Update(const float DeltaTime)
@@ -39,11 +40,36 @@ void AgentManager::Update(const float DeltaTime)
 		Agent.Update(DeltaTime);
 		Agent.Draw();
 	}
+
+	BoundaryLooper();
 }
 
-void AgentManager::SpawnAgent()
+void AgentManager::BoundaryLooper()
+{
+	for (Agent& Agent : Agents_)
+	{
+		float X = Agent.GetPosition().x;
+		float Y = Agent.GetPosition().y;
+
+		X = X < 0 ? Bounds_.x : (X > Bounds_.x ? 0 : X);
+		Y = Y < 0 ? Bounds_.y : (Y > Bounds_.y ? 0 : Y);
+
+		Agent.SetPosition({X, Y});
+	}
+
+	float X = Target_.GetPosition().x;
+	float Y = Target_.GetPosition().y;
+
+	X = X < 0 ? Bounds_.x : (X > Bounds_.x ? 0 : X);
+	Y = Y < 0 ? Bounds_.y : (Y > Bounds_.y ? 0 : Y);
+
+	Target_.SetPosition({X, Y});
+}
+
+void AgentManager::SpawnAgent(const Vec2& Position)
 {
 	Agents_.emplace_back();
+	Agents_.back().SetPosition(Position);
 }
 
 void AgentManager::SetCurrentBehavior(EBehaviorIndex Index)

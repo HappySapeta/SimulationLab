@@ -21,17 +21,17 @@ struct BehaviorDeleter
 class AgentManager
 {
 public:
-	AgentManager()
-		: CurrentBehaviorIndex_(EBehaviorIndex::SEEK), CurrentBehavior_(nullptr)
-	{}
+	AgentManager(const Vec2& Bounds);
 	
 	void Update(float DeltaTime);
-	void Initialize();
-	void SpawnAgent();
+	void SpawnAgent(const Vec2& Position);
 	void SetCurrentBehavior(EBehaviorIndex Index); 
 
 private:
+	void BoundaryLooper();
 
+private:
+	Vec2 Bounds_;
 	const EBehaviorIndex CurrentBehaviorIndex_;
 	SteeringBehaviorBase* CurrentBehavior_;
 	std::unordered_map<EBehaviorIndex, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>> Behaviors_;
