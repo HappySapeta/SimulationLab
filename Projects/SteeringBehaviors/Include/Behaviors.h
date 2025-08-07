@@ -14,6 +14,7 @@ struct SteeringData
 class SteeringBehaviorBase
 {
 public:
+	SteeringBehaviorBase() = default;
 	virtual ~SteeringBehaviorBase() = default;
 	virtual Vec2 GetSteeringForce(const SteeringData& Data) = 0;
 };

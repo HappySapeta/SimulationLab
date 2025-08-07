@@ -1,12 +1,15 @@
-#include <raylib/raylib.h>
-
 #include "Agent.h"
+#include "AgentManager.h"
 #include "Core/WindowConfiguration.h"
+
+#include <raylib/raylib.h>
 
 int main()
 {
-    Agent Agent({SL_WINDOW_WIDTH / 2, SL_WINDOW_HEIGHT / 2}, {0, 0});
-    
+    AgentManager Manager;
+    Manager.Initialize();
+    Manager.SetCurrentBehavior(EBehaviorIndex::SEEK);
+    Manager.SpawnAgent();
     InitWindow(SL_WINDOW_WIDTH, SL_WINDOW_HEIGHT, "Steering Behaviors");
     while (!WindowShouldClose())
     {
@@ -14,8 +17,7 @@ int main()
         ClearBackground(LIGHTGRAY);
         BeginDrawing();
         {
-            Agent.Update(GetFrameTime());
-            Agent.Draw();
+            Manager.Update(GetFrameTime());
         }
         EndDrawing();
     }

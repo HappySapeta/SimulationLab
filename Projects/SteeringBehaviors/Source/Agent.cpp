@@ -3,6 +3,13 @@
 #include "AgentConfiguration.h"
 #include "Behaviors.h"
 
+static Vec2 TriangleVertices[]
+{
+	{ 1.0f,  0.0f},
+	{-0.6f, -0.8f},
+	{-0.6f,  0.8f},
+};
+
 void Agent::AddForce(const Vec2 Force)
 {
 	NetForce_ += Force;
