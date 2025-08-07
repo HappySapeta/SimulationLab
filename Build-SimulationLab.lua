@@ -31,3 +31,4 @@ OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
 include "Projects/Core/Build-Core.lua"
 include "Projects/WelcomeProject/Build-WelcomeProject.lua"
 
+include "Projects/SteeringBehaviors/Build-SteeringBehaviors.lua"
