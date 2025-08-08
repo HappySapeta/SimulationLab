@@ -3,6 +3,11 @@
 #include "Core/WindowConfiguration.h"
 
 #include <cassert>
+#define RAYGUI_IMPLEMENTATION
+#include <raylib/raygui.h>
+
+constexpr uint16_t SPAWN_BUTTON_WIDTH = 150;
+constexpr uint16_t SPAWN_BUTTON_HEIGHT = 75;
 
 void BehaviorDeleter::operator()(SteeringBehaviorBase* Ptr)
 {
@@ -12,9 +17,7 @@ void BehaviorDeleter::operator()(SteeringBehaviorBase* Ptr)
 AgentManager::AgentManager(const Vec2& Bounds)
 	: CurrentBehaviorIndex_(EBehaviorIndex::SEEK), CurrentBehavior_(nullptr), Bounds_(Bounds)
 {
-	Target_.SetPosition({0,0});
-	Target_.SetVelocity({150,150});
-	Target_.SetTargetType(ETargetType::SEEK);
+	Target_.SetPosition({SL_WINDOW_WIDTH / 2, SL_WINDOW_HEIGHT / 2});
 
 	Behaviors_.insert({EBehaviorIndex::SEEK, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new SeekBehavior())});
 	Behaviors_.insert({EBehaviorIndex::FLEE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new FleeBehavior())});
@@ -23,6 +26,8 @@ AgentManager::AgentManager(const Vec2& Bounds)
 
 void AgentManager::Update(const float DeltaTime)
 {
+	DrawGUI();
+	
 	Target_.Update(DeltaTime);
 	Target_.Draw();
 	for (Agent& Agent : Agents_)
@@ -64,6 +69,37 @@ void AgentManager::BoundaryLooper()
 	Y = Y < 0 ? Bounds_.y : (Y > Bounds_.y ? 0 : Y);
 
 	Target_.SetPosition({X, Y});
+}
+
+void AgentManager::DrawGUI()
+{
+	constexpr uint16_t SPACING = 10;
+	Rectangle SpawnButtonBounds
+	{
+		SL_WINDOW_WIDTH / 2 - SPAWN_BUTTON_WIDTH - SPACING,
+		SL_WINDOW_HEIGHT - SL_WINDOW_HEIGHT * 0.1f - SPAWN_BUTTON_HEIGHT / 2,
+		SPAWN_BUTTON_WIDTH,
+		SPAWN_BUTTON_HEIGHT
+	};
+
+	Rectangle ClearButtonBounds
+	{
+		SL_WINDOW_WIDTH / 2 + SPACING,
+		SpawnButtonBounds.y,
+		SPAWN_BUTTON_WIDTH,
+		SPAWN_BUTTON_HEIGHT
+	};
+	
+	if (GuiButton(SpawnButtonBounds, "SPAWN AGENT"))
+	{
+		float PosX = (std::rand() / (float)RAND_MAX) * SL_WINDOW_WIDTH;
+		float PosY = (std::rand() / (float)RAND_MAX) * SL_WINDOW_HEIGHT;
+		SpawnAgent({PosX, PosY});
+	}
+	if (GuiButton(ClearButtonBounds, "REMOVE ALL AGENTS"))
+	{
+		Agents_.clear();
+	}
 }
 
 void AgentManager::SpawnAgent(const Vec2& Position)

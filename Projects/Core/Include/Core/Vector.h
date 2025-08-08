@@ -33,6 +33,11 @@ namespace SL
 		
 		float GetLength() const { return std::hypot(x, y); }
 
+		static float Distance(const Vec2& V1, const Vec2& V2)
+		{
+			return (V1 - V2).GetLength();
+		}
+
 		Vec2 GetNormal(const double Tolerance = 0.00001) const
 		{
 			const float Length = GetLength();
@@ -241,4 +246,9 @@ namespace SL
 	const Vec3 Down{0, 0, -1};
 	const Vec3 Forward{0, 1, 0};
 	const Vec3 Back{0, -1, 0};
+
+	static SL::Vec2 ToVec2(const Vector2& RayVec)
+	{
+		return SL::Vec2{RayVec.x, RayVec.y};
+	}
 }
