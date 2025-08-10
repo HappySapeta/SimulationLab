@@ -29,7 +29,6 @@ public:
 
 private:
 	void BoundaryLooper();
-	void DrawGUI();
 
 private:
 	Vec2 Bounds_;

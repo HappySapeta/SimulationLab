@@ -12,6 +12,7 @@ void Target::Update(const float DeltaTime)
 void Target::Draw()
 {
 	DrawCircleV(Position_, SL_TARGET_SIZE, YELLOW);
+	DrawText("Target", Position_.x, Position_.y, 10, RED);
 }
 
 void Target::MoveWithMouseClick()
