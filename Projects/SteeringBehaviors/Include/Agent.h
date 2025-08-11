@@ -18,7 +18,7 @@ public:
 	
 public:
 	void AddForce(const Vec2 Force);
-	void Update(const float DeltaTime);
+	virtual void Update(const float DeltaTime);
 	virtual void Draw();
 	void Reset();
 	

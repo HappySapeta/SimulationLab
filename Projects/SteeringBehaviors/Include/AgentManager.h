@@ -1,8 +1,11 @@
 ﻿#pragma once
 #include "Target.h"
+#include "Core/WindowConfiguration.h"
 
-#include <memory>
 #include <unordered_map>
+#include <memory>
+
+#include "SteeringGUI.h"
 
 class SteeringBehaviorBase;
 
@@ -24,8 +27,11 @@ public:
 	AgentManager(const Vec2& Bounds);
 	
 	void Update(float DeltaTime);
+	void SpawnAgent();
 	void SpawnAgent(const Vec2& Position);
-	void SetCurrentBehavior(EBehaviorIndex Index); 
+	void DeSpawnAll();
+	void SetCurrentBehavior(EBehaviorIndex Index);
+	void SetArriveBehavior(bool bGetShouldArriveAtTarget) { bUseArriveBehavior = true; }
 
 private:
 	void BoundaryLooper();
@@ -35,6 +41,7 @@ private:
 	const EBehaviorIndex CurrentBehaviorIndex_;
 	SteeringBehaviorBase* CurrentBehavior_;
 	std::unordered_map<EBehaviorIndex, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>> Behaviors_;
+	bool bUseArriveBehavior = false;
 	
 private:
 	std::vector<Agent> Agents_;

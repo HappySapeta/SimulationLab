@@ -12,9 +12,7 @@ void BehaviorDeleter::operator()(SteeringBehaviorBase* Ptr)
 AgentManager::AgentManager(const Vec2& Bounds)
 	: CurrentBehaviorIndex_(EBehaviorIndex::SEEK), CurrentBehavior_(nullptr), Bounds_(Bounds)
 {
-	Target_.SetPosition({0,0});
-	Target_.SetVelocity({150,150});
-	Target_.SetTargetType(ETargetType::SEEK);
+	Target_.SetPosition({SL_WINDOW_WIDTH / 2, SL_WINDOW_HEIGHT / 2});
 
 	Behaviors_.insert({EBehaviorIndex::SEEK, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new SeekBehavior())});
 	Behaviors_.insert({EBehaviorIndex::FLEE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new FleeBehavior())});
@@ -34,7 +32,12 @@ void AgentManager::Update(const float DeltaTime)
 			Target_.GetPosition(),
 			Target_.GetVelocity()
 		};
-		const Vec2 Force = CurrentBehavior_->GetSteeringForce(Data);
+		Vec2 Force = CurrentBehavior_->GetSteeringForce(Data);
+
+		if (CurrentBehaviorIndex_ != EBehaviorIndex::FLEE && bUseArriveBehavior)
+		{
+			//Force += ArriveBehavior::GetSteeringForce(Data);
+		}
 		
 		Agent.AddForce(Force);
 		Agent.Update(DeltaTime);
@@ -66,10 +69,22 @@ void AgentManager::BoundaryLooper()
 	Target_.SetPosition({X, Y});
 }
 
+void AgentManager::SpawnAgent()
+{
+	float PosX = (std::rand() / (float)RAND_MAX) * SL_WINDOW_WIDTH;
+	float PosY = (std::rand() / (float)RAND_MAX) * SL_WINDOW_HEIGHT;
+	SpawnAgent({PosX, PosY});
+}
+
 void AgentManager::SpawnAgent(const Vec2& Position)
 {
 	Agents_.emplace_back();
 	Agents_.back().SetPosition(Position);
+}
+
+void AgentManager::DeSpawnAll()
+{
+	Agents_.clear();
 }
 
 void AgentManager::SetCurrentBehavior(EBehaviorIndex Index)
