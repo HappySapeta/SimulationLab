@@ -1,4 +1,6 @@
 #include "Behaviors.h"
+
+#include "Agent.h"
 #include "AgentConfiguration.h"
 
 Vec2 SeekBehavior::GetSteeringForce(const SteeringData& Data)
