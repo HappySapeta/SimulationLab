@@ -34,9 +34,9 @@ void AgentManager::Update(const float DeltaTime)
 		};
 		Vec2 Force = CurrentBehavior_->GetSteeringForce(Data);
 
-		if (CurrentBehaviorIndex_ != EBehaviorIndex::FLEE && bUseArriveBehavior)
+		if (CurrentBehaviorIndex_ != EBehaviorIndex::FLEE && bUseArriveBehavior_)
 		{
-			//Force += ArriveBehavior::GetSteeringForce(Data);
+			Force += ArriveBehavior::GetSteeringForce(Data);
 		}
 		
 		Agent.AddForce(Force);

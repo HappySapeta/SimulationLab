@@ -36,3 +36,9 @@ class InterceptBehavior : public SteeringBehaviorBase
 public:
 	virtual Vec2 GetSteeringForce(const SteeringData& Data) override;
 };
+
+class ArriveBehavior : public SteeringBehaviorBase
+{
+public:
+	static Vec2 GetSteeringForce(const SteeringData& Data);
+};

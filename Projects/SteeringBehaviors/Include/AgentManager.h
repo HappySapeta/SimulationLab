@@ -31,7 +31,7 @@ public:
 	void SpawnAgent(const Vec2& Position);
 	void DeSpawnAll();
 	void SetCurrentBehavior(EBehaviorIndex Index);
-	void SetArriveBehavior(bool bGetShouldArriveAtTarget) { bUseArriveBehavior = true; }
+	void SetArriveBehavior(bool bUseArriveBehavior) { bUseArriveBehavior_ = bUseArriveBehavior; }
 
 private:
 	void BoundaryLooper();
@@ -41,7 +41,7 @@ private:
 	const EBehaviorIndex CurrentBehaviorIndex_;
 	SteeringBehaviorBase* CurrentBehavior_;
 	std::unordered_map<EBehaviorIndex, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>> Behaviors_;
-	bool bUseArriveBehavior = false;
+	bool bUseArriveBehavior_ = false;
 	
 private:
 	std::vector<Agent> Agents_;
