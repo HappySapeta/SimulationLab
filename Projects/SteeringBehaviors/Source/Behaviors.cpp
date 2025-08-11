@@ -36,3 +36,19 @@ Vec2 InterceptBehavior::GetSteeringForce(const SteeringData& Data)
 
 	return ForceToApply;
 }
+
+Vec2 ArriveBehavior::GetSteeringForce(const SteeringData& Data)
+{
+	const Vec2& AgentVelocity = Data.AgentVelocity;
+	const float DistanceToTarget = Vec2::Distance(Data.TargetPosition, Data.AgentPosition);
+	if (DistanceToTarget <= SL_AGENT_ARRIVAL_RADIUS)
+	{
+		const float SlowingFactor = 1.0f - (DistanceToTarget / SL_AGENT_ARRIVAL_RADIUS);
+		const Vec2 DesiredVelocity = (Data.TargetPosition - Data.AgentPosition).GetNormal() * SL_AGENT_MAXSPEED * -1 * SlowingFactor;
+
+		const Vec2 ForceToApply = DesiredVelocity - AgentVelocity;
+		return ForceToApply;
+	}
+
+	return {0,0};
+}

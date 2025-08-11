@@ -24,7 +24,7 @@ void SteeringGUI::Draw()
 		}
 
 		// Information label.
-		GuiLabel(Rectangle{AnchorTopRight.x - 210, AnchorTopRight.y + 200, 210, 50}, "! Click and drag to move Target.");
+		GuiLabel(Rectangle{AnchorTopRight.x - 210, AnchorTopRight.y + 180, 210, 50}, "! Click and drag to move Target.");
 
 		// Behavior select dropdown box.
 		{
