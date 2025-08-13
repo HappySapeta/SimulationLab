@@ -21,8 +21,9 @@ void Target::Update(const float DeltaTime)
 			static float Angle = 0.0f;
 			Velocity_ = {0, 0};
 
-			const float PosX = SL_WINDOW_WIDTH / 2 + SL_TARGET_MOVEMENTRADIUS * std::cos(Angle);
-			const float PosY = SL_WINDOW_HEIGHT / 2 + SL_TARGET_MOVEMENTRADIUS * std::sin(Angle);
+			constexpr float MovmentRadius = SL_WINDOW_HEIGHT / 2.5f;
+			const float PosX = SL_WINDOW_WIDTH / 2 + MovmentRadius * std::cos(Angle);
+			const float PosY = SL_WINDOW_HEIGHT / 2 + MovmentRadius * std::sin(Angle);
 			Position_ = {PosX, PosY};
 			Angle += DeltaTime;
 			if (Angle >= 2 * PI)
