@@ -47,6 +47,11 @@ void AgentManager::Update(const float DeltaTime)
 	BoundaryLooper();
 }
 
+void AgentManager::SetTargetMovementMode(int ModeAsInt)
+{
+	Target_.SetMovementMode(ToMovementMode(ModeAsInt));
+}
+
 void AgentManager::BoundaryLooper()
 {
 	for (Agent& Agent : Agents_)
@@ -87,11 +92,21 @@ void AgentManager::DeSpawnAll()
 	Agents_.clear();
 }
 
-void AgentManager::SetCurrentBehavior(EBehaviorIndex Index)
+void AgentManager::SetCurrentBehavior(int Index)
 {
-	if (Behaviors_.contains(Index))
+	EBehaviorIndex Behavior = ToBehaviorIndex(Index);
+	if (Behaviors_.contains(Behavior))
 	{
-		CurrentBehavior_ = Behaviors_.at(Index).get();
+		CurrentBehavior_ = Behaviors_.at(Behavior).get();
+		assert(CurrentBehavior_);
+	}
+}
+
+void AgentManager::SetCurrentBehavior(EBehaviorIndex Behavior)
+{
+	if (Behaviors_.contains(Behavior))
+	{
+		CurrentBehavior_ = Behaviors_.at(Behavior).get();
 		assert(CurrentBehavior_);
 	}
 }

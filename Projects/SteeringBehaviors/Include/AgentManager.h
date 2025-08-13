@@ -11,10 +11,22 @@ class SteeringBehaviorBase;
 
 enum class EBehaviorIndex : uint8_t
 {
+	NONE,
 	SEEK,
 	FLEE,
-	INTERCEPT
+	INTERCEPT,
+	COUNT
 };
+
+inline EBehaviorIndex ToBehaviorIndex(const int Index)
+{
+	using UnderlyingType = std::underlying_type_t<EBehaviorIndex>;
+	EBehaviorIndex Behavior = Index >= static_cast<UnderlyingType>(EBehaviorIndex::NONE) &&
+						 Index < static_cast<UnderlyingType>(EBehaviorIndex::COUNT) ?
+						 static_cast<EBehaviorIndex>(Index) : EBehaviorIndex::NONE;
+
+	return Behavior;
+}
 
 struct BehaviorDeleter
 {
@@ -30,8 +42,10 @@ public:
 	void SpawnAgent();
 	void SpawnAgent(const Vec2& Position);
 	void DeSpawnAll();
-	void SetCurrentBehavior(EBehaviorIndex Index);
+	void SetCurrentBehavior(int Index);
+	void SetCurrentBehavior(EBehaviorIndex Behavior);
 	void SetArriveBehavior(bool bUseArriveBehavior) { bUseArriveBehavior_ = bUseArriveBehavior; }
+	void SetTargetMovementMode(int ModeAsInt);
 
 private:
 	void BoundaryLooper();
