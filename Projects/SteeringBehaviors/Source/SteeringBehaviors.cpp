@@ -15,12 +15,11 @@ int main()
 
     while (!WindowShouldClose())
     {
-        ClearBackground(LIGHTGRAY);
         BeginDrawing();
         {
-            Manager.Update(GetFrameTime());
             GUI.Draw();
-            Manager.SetCurrentBehavior((EBehaviorIndex)(GUI.GetBehaviorValue()));
+            
+            Manager.SetCurrentBehavior(GUI.GetBehaviorValue());
             if (GUI.GetSpawnButtonValue())
             {
                 Manager.SpawnAgent();
@@ -30,6 +29,8 @@ int main()
                 Manager.DeSpawnAll();
             }
             Manager.SetArriveBehavior(GUI.GetShouldArriveAtTarget());
+            Manager.SetTargetMovementMode(GUI.GetTargetMovementMode());
+            Manager.Update(GetFrameTime());
         }
         EndDrawing();
     }
