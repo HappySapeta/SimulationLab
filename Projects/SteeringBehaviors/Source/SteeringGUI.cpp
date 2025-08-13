@@ -26,23 +26,23 @@ void SteeringGUI::Draw()
 
 	// Target movement groupbox
 	{
-		GuiGroupBox(Rectangle{AnchorTopRight.x - 240, AnchorTopRight.y + 200, 230, 120}, "TARGET MOVEMENT");
+		GuiGroupBox(Rectangle{AnchorTopLeft.x + 10, AnchorTopLeft.y + 10, 230, 100}, "TARGET MOVEMENT");
 
 		int DefaultCheckPadding = GuiGetStyle(CHECKBOX, CHECK_PADDING);
 		GuiSetStyle(CHECKBOX, CHECK_PADDING, 5);
-		GuiCheckBox(Rectangle{AnchorTopRight.x - 190, AnchorTopRight.y + 210, 20, 20}, "Auto move target?", &bAutoMoveTarget_);
+		GuiCheckBox(Rectangle{AnchorTopLeft.x + 20, AnchorTopLeft.y + 20, 20, 20}, "Auto move target?", &bAutoMoveTarget_);
 		GuiSetStyle(CHECKBOX, CHECK_PADDING, DefaultCheckPadding);
 		
 		// Information label.
 		if (!bAutoMoveTarget_)
 		{
-			GuiLabel(Rectangle{AnchorTopRight.x - 210, AnchorTopRight.y + 280, 210, 50}, "! Click and drag to move Target.");
+			GuiLabel(Rectangle{AnchorTopLeft.x + 40, AnchorTopLeft.y + 100, 210, 50}, "! Click and drag to move Target.");
 		}
 	}
 
 	// Target movement choice
 	{
-		if (GuiDropdownBox(Rectangle{AnchorTopRight.x - 230, AnchorTopRight.y + 240, 210, 50}, "DIAGONAL;CIRCLE;X-AXIS;Y-AXIS", &TargetMovementMode_, bTargetMovementEdit_ && bAutoMoveTarget_))
+		if (GuiDropdownBox(Rectangle{AnchorTopLeft.x + 20, AnchorTopLeft.y + 50, 210, 50}, "DIAGONAL;CIRCLE;X-AXIS;Y-AXIS", &TargetMovementMode_, bTargetMovementEdit_ && bAutoMoveTarget_))
 		{
 			bTargetMovementEdit_ = !bTargetMovementEdit_;
 		}
