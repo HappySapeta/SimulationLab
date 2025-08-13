@@ -42,7 +42,7 @@ void SteeringGUI::Draw()
 
 	// Target movement choice
 	{
-		if (GuiDropdownBox(Rectangle{AnchorTopLeft.x + 20, AnchorTopLeft.y + 50, 210, 50}, "DIAGONAL;CIRCLE;X-AXIS;Y-AXIS", &TargetMovementMode_, bTargetMovementEdit_ && bAutoMoveTarget_))
+		if (GuiDropdownBox(Rectangle{AnchorTopLeft.x + 20, AnchorTopLeft.y + 50, 210, 50}, "DIAGONAL;CIRCLE;X-AXIS;Y-AXIS", &TargetMovementMode_, bTargetMovementEdit_))
 		{
 			bTargetMovementEdit_ = !bTargetMovementEdit_;
 		}
