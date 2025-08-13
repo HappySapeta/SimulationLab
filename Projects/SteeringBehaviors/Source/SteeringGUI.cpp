@@ -4,6 +4,8 @@
 
 void SteeringGUI::Draw()
 {
+	ClearBackground(LIGHTGRAY);
+	
 	// Agent Manager groupbox
 	{
 		GuiGroupBox(Rectangle{AnchorTopRight.x - 240, AnchorTopRight.y + 10, 230, 70}, "AGENT MANAGER");
