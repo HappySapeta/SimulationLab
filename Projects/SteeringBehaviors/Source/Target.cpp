@@ -55,7 +55,6 @@ void Target::Update(const float DeltaTime)
 void Target::Draw()
 {
 	DrawCircleV(GetPosition(), SL_TARGET_SIZE, SL_TARGET_COLOR);
-	DrawLineV(GetPosition(), GetPosition() + GetVelocity(), RED);
 }
 
 void Target::MoveWithMouseClick()
