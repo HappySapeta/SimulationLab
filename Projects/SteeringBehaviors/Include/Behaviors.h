@@ -37,6 +37,16 @@ public:
 	virtual Vec2 GetSteeringForce(const SteeringData& Data) override;
 };
 
+class PursuitBehavior : public SteeringBehaviorBase
+{
+public:
+	SteeringData GetPursuitData() { return PursuitData_; }
+	virtual Vec2 GetSteeringForce(const SteeringData& Data) override;
+
+private:
+	SteeringData PursuitData_;
+};
+
 class ArriveBehavior : public SteeringBehaviorBase
 {
 public:

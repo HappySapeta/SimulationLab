@@ -37,6 +37,20 @@ Vec2 InterceptBehavior::GetSteeringForce(const SteeringData& Data)
 	return ForceToApply;
 }
 
+Vec2 PursuitBehavior::GetSteeringForce(const SteeringData& Data)
+{
+	const Vec2 TargetHeading = (Data.TargetPosition - Data.AgentPosition).GetNormal();
+	const Vec2 PursueTarget = Data.TargetPosition + (-1 * TargetHeading) * SL_AGENT_PURSUE_RADIUS;
+	DrawCircleV(PursueTarget, 10.0f, RED);
+
+	PursuitData_ = {Data.AgentPosition, Data.AgentVelocity, PursueTarget, Data.TargetVelocity};
+
+	SeekBehavior Seek;
+	const Vec2 ForceToApply = Seek.GetSteeringForce(PursuitData_);
+
+	return ForceToApply;
+}
+
 Vec2 ArriveBehavior::GetSteeringForce(const SteeringData& Data)
 {
 	const Vec2& AgentVelocity = Data.AgentVelocity;

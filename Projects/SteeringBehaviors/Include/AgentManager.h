@@ -15,6 +15,7 @@ enum class EBehaviorIndex : uint8_t
 	SEEK,
 	FLEE,
 	INTERCEPT,
+	PURSUE,
 	COUNT
 };
 
@@ -52,7 +53,7 @@ private:
 
 private:
 	Vec2 Bounds_;
-	const EBehaviorIndex CurrentBehaviorIndex_;
+	EBehaviorIndex CurrentBehaviorIndex_;
 	SteeringBehaviorBase* CurrentBehavior_;
 	std::unordered_map<EBehaviorIndex, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>> Behaviors_;
 	bool bUseArriveBehavior_ = false;
