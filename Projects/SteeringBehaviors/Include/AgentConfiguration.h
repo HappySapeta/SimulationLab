@@ -9,6 +9,7 @@ constexpr float SL_AGENT_MAXFORCE = 200.0f;
 constexpr float SL_AGENT_SEEK_STRENGTH = 1.0f;
 constexpr float SL_AGENT_FLEE_STRENGTH = 1.0f;
 constexpr float SL_AGENT_INTERCEPT_LOOKAHEAD = 1.0f;
+constexpr float SL_AGENT_PURSUE_RADIUS = 50.0f;
 constexpr float SL_AGENT_ARRIVAL_RADIUS = 300.0f;
 
 constexpr uint8_t SL_TARGET_SIZE = 20;

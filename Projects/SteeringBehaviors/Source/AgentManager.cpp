@@ -17,6 +17,7 @@ AgentManager::AgentManager(const Vec2& Bounds)
 	Behaviors_.insert({EBehaviorIndex::SEEK, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new SeekBehavior())});
 	Behaviors_.insert({EBehaviorIndex::FLEE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new FleeBehavior())});
 	Behaviors_.insert({EBehaviorIndex::INTERCEPT, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new InterceptBehavior())});
+	Behaviors_.insert({EBehaviorIndex::PURSUE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new PursuitBehavior())});
 }
 
 void AgentManager::Update(const float DeltaTime)
@@ -32,11 +33,24 @@ void AgentManager::Update(const float DeltaTime)
 			Target_.GetPosition(),
 			Target_.GetVelocity()
 		};
+		
+		CurrentBehavior_ = Behaviors_.at(CurrentBehaviorIndex_).get();
+		assert(CurrentBehavior_);
 		Vec2 Force = CurrentBehavior_->GetSteeringForce(Data);
 
-		if (CurrentBehaviorIndex_ != EBehaviorIndex::FLEE && bUseArriveBehavior_)
+		if (bUseArriveBehavior_)
 		{
-			Force += ArriveBehavior::GetSteeringForce(Data);
+			if (CurrentBehaviorIndex_ == EBehaviorIndex::PURSUE)
+			{
+				if (PursuitBehavior* Pursue = dynamic_cast<PursuitBehavior*>(CurrentBehavior_))
+				{
+					Force += ArriveBehavior::GetSteeringForce(Pursue->GetPursuitData());
+				}
+			}
+			else if (CurrentBehaviorIndex_ != EBehaviorIndex::FLEE)
+			{
+				Force += ArriveBehavior::GetSteeringForce(Data);
+			}
 		}
 		
 		Agent.AddForce(Force);
@@ -94,11 +108,10 @@ void AgentManager::DeSpawnAll()
 
 void AgentManager::SetCurrentBehavior(int Index)
 {
-	EBehaviorIndex Behavior = ToBehaviorIndex(Index);
-	if (Behaviors_.contains(Behavior))
+	EBehaviorIndex NewBehaviorIndex = ToBehaviorIndex(Index);
+	if (CurrentBehaviorIndex_ != NewBehaviorIndex)
 	{
-		CurrentBehavior_ = Behaviors_.at(Behavior).get();
-		assert(CurrentBehavior_);
+		CurrentBehaviorIndex_ = NewBehaviorIndex;
 	}
 }
 
