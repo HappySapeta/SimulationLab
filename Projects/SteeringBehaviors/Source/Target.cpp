@@ -19,17 +19,21 @@ void Target::Update(const float DeltaTime)
 		case EMovementMode::CIRCLE:
 		{
 			static float Angle = 0.0f;
-			Velocity_ = {0, 0};
 
-			constexpr float MovmentRadius = SL_WINDOW_HEIGHT / 2.5f;
-			const float PosX = SL_WINDOW_WIDTH / 2 + MovmentRadius * std::cos(Angle);
-			const float PosY = SL_WINDOW_HEIGHT / 2 + MovmentRadius * std::sin(Angle);
-			Position_ = {PosX, PosY};
+			constexpr float MovementRadius = SL_WINDOW_HEIGHT / 2.5f;
+			const float PosX = SL_WINDOW_WIDTH / 2 + MovementRadius * std::cos(Angle);
+			const float PosY = SL_WINDOW_HEIGHT / 2 + MovementRadius * std::sin(Angle);
+			const Vec2 DesiredPosition = {PosX, PosY};
+			
+			Velocity_ = (DesiredPosition - GetPosition()) / DeltaTime;
+
 			Angle += DeltaTime;
 			if (Angle >= 2 * PI)
 			{
 				Angle = 0.0f;
 			}
+
+			break;
 		}
 		case EMovementMode::XAXIS:
 		{
@@ -44,25 +48,26 @@ void Target::Update(const float DeltaTime)
 		default:
 			break;
 	}
+	NetForce_ = {0,0};
 	Agent::Update(DeltaTime);
 }
 
 void Target::Draw()
 {
-	DrawCircleV(Position_, SL_TARGET_SIZE, SL_TARGET_COLOR);
-	DrawText("Target", Position_.x, Position_.y, 10, RED);
+	DrawCircleV(GetPosition(), SL_TARGET_SIZE, SL_TARGET_COLOR);
+	DrawLineV(GetPosition(), GetPosition() + GetVelocity(), RED);
 }
 
 void Target::MoveWithMouseClick()
 {
 	const Vec2 MousePosition = SL::ToVec2(GetMousePosition());
 	
-	if (Vec2::Distance(MousePosition, Position_) < SL_TARGET_SIZE || bIsCapturedByMouse)
+	if (Vec2::Distance(MousePosition, GetPosition()) < SL_TARGET_SIZE || bIsCapturedByMouse)
 	{
 		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 		{
 			bIsCapturedByMouse = true;
-			Position_ = MousePosition;
+			SetPosition(MousePosition);
 		}
 	}
 
@@ -70,4 +75,12 @@ void Target::MoveWithMouseClick()
 	{
 		bIsCapturedByMouse = false;
 	}
+}
+
+void Target::SetPosition(const Vec2& NewPosition)
+{
+	const double CurrentTime = GetTime();
+	Velocity_ = (NewPosition - Position_) / (CurrentTime - LastPositionUpdateTime_);
+	Position_ = NewPosition;
+	LastPositionUpdateTime_ = CurrentTime;
 }
