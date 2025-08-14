@@ -25,7 +25,7 @@ class Target : public Agent
 {
 public:
 	virtual ~Target() = default;
-	void MoveWithMouseClick();
+	virtual void SetPosition(const Vec2& NewPosition) override;
 	virtual void Update(const float DeltaTime) override;
 	virtual void Draw() override;
 
@@ -33,7 +33,11 @@ public:
 	void SetMovementMode(EMovementMode TargetMovementMode) { TargetMovementMode_ = TargetMovementMode; }
 
 private:
+	void MoveWithMouseClick();
+	
+private:
 
+	double LastPositionUpdateTime_ = 0;
 	bool bIsCapturedByMouse = false;
 	EMovementMode TargetMovementMode_ = EMovementMode::NONE;
 };

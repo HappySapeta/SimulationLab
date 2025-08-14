@@ -41,7 +41,6 @@ Vec2 PursuitBehavior::GetSteeringForce(const SteeringData& Data)
 {
 	const Vec2 TargetHeading = (Data.TargetPosition - Data.AgentPosition).GetNormal();
 	const Vec2 PursueTarget = Data.TargetPosition + (-1 * TargetHeading) * SL_AGENT_PURSUE_RADIUS;
-	DrawCircleV(PursueTarget, 10.0f, RED);
 
 	PursuitData_ = {Data.AgentPosition, Data.AgentVelocity, PursueTarget, Data.TargetVelocity};
 

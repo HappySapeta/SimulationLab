@@ -24,7 +24,7 @@ public:
 	
 	Vec2 GetVelocity() const { return Velocity_; }
 	Vec2 GetPosition() const { return Position_; }
-	void SetPosition(const Vec2& Position) { Position_ = Position; }
+	virtual void SetPosition(const Vec2& NewPosition) { Position_ = NewPosition; }
 
 protected:
 	Vec2 Position_;
