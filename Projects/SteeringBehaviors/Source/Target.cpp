@@ -13,7 +13,7 @@ void Target::Update(const float DeltaTime)
 		}
 		case EMovementMode::DIAGONAL:
 		{
-			Velocity_ = Vec2{1, 1} * SL_TARGET_MOVEMENTSPEED;
+			SetVelocity(Vec2{1, 1} * SL_TARGET_MOVEMENTSPEED);
 			break;
 		}
 		case EMovementMode::CIRCLE:
@@ -25,7 +25,7 @@ void Target::Update(const float DeltaTime)
 			const float PosY = SL_WINDOW_HEIGHT / 2 + MovementRadius * std::sin(Angle);
 			const Vec2 DesiredPosition = {PosX, PosY};
 			
-			Velocity_ = (DesiredPosition - GetPosition()) / DeltaTime;
+			SetVelocity((DesiredPosition - GetPosition()) / DeltaTime);
 
 			Angle += DeltaTime;
 			if (Angle >= 2 * PI)
@@ -37,12 +37,12 @@ void Target::Update(const float DeltaTime)
 		}
 		case EMovementMode::XAXIS:
 		{
-			Velocity_ = Vec2{1, 0} * SL_TARGET_MOVEMENTSPEED;
+			SetVelocity(Vec2{1, 0} * SL_TARGET_MOVEMENTSPEED);
 			break;
 		}
 		case EMovementMode::YAXIS:
 		{
-			Velocity_ = Vec2{0, 1} * SL_TARGET_MOVEMENTSPEED;
+			SetVelocity(Vec2{0, 1} * SL_TARGET_MOVEMENTSPEED);
 			break;
 		}
 		default:
