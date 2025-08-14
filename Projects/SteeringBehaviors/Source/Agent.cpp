@@ -5,21 +5,22 @@
 
 static Vec2 TriangleVertices[]
 {
-	{ 1.0f,  0.0f},
-	{-0.6f, -0.8f},
-	{-0.6f,  0.8f},
+	Vec2{ 1.0f,  0.0f},
+	Vec2{-0.6f, -0.8f},
+	Vec2{-0.6f,  0.8f},
 };
 
 void Agent::AddForce(const Vec2 Force)
 {
 	NetForce_ += Force;
+	NetForce_ = NetForce_.GetNormal() * std::min(SL_AGENT_MAXFORCE, NetForce_.GetLength());
 }
 
 void Agent::Update(const float DeltaTime)
 {
 	Velocity_ = Velocity_ + NetForce_ * DeltaTime;
 	Position_ = Position_ + Velocity_ * DeltaTime;
-	NetForce_ = {0, 0};
+	NetForce_ = Vec2{0, 0};
 }
 
 void Agent::Draw()
@@ -42,7 +43,7 @@ void Agent::Draw()
 
 void Agent::Reset()
 {
-	Velocity_ = {0,0};
-	Position_ = {0,0};
-	NetForce_ = {0,0};
+	Velocity_ = Vec2{0,0};
+	Position_ = Vec2{0,0};
+	NetForce_ = Vec2{0,0};
 }
