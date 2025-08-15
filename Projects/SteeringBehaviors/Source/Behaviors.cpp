@@ -22,7 +22,12 @@ Vec2 FleeBehavior::GetSteeringForce(const SteeringData& Data)
 	const Vec2 VelocityDifference = DesiredVelocity - Data.AgentVelocity;
 	const Vec2 ForceToApply = VelocityDifference * SL_AGENT_FLEE_STRENGTH;
 
-	return ForceToApply;
+	if (Vec2::Distance(Data.TargetPosition, Data.AgentPosition) <= SL_AGENT_FLEE_RADIUS)
+	{
+		return ForceToApply;
+	}
+
+	return {0,0};
 }
 
 Vec2 InterceptBehavior::GetSteeringForce(const SteeringData& Data)
@@ -57,7 +62,12 @@ Vec2 EvasionBehavior::GetSteeringForce(const SteeringData& Data)
 	FleeBehavior Flee;
 	const Vec2 ForceToApply = Flee.GetSteeringForce({Data.AgentPosition, Data.AgentVelocity, TargetFuture, Data.TargetVelocity});
 
-	return ForceToApply;
+	if (Vec2::Distance(Data.TargetPosition, Data.AgentPosition) <= SL_AGENT_FLEE_RADIUS)
+	{
+		return ForceToApply;
+	}
+
+	return {0,0};
 }
 
 Vec2 ArriveBehavior::GetSteeringForce(const SteeringData& Data)
