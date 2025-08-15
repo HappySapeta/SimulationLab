@@ -16,6 +16,7 @@ enum class EBehaviorIndex : uint8_t
 	FLEE,
 	INTERCEPT,
 	PURSUE,
+	EVADE,
 	COUNT
 };
 

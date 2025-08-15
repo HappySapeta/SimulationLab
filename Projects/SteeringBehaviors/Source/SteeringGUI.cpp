@@ -52,7 +52,7 @@ void SteeringGUI::Draw()
 
 	// Behavior select dropdown box.
 	{
-		if (GuiDropdownBox(Rectangle{AnchorTopRight.x - 230, AnchorTopRight.y + 100, 210, 50}, "SEEK;FLEE;INTERCEPT;PURSUE", &BehaviorValue_, bBehaviorDropdownEdit_))
+		if (GuiDropdownBox(Rectangle{AnchorTopRight.x - 230, AnchorTopRight.y + 100, 210, 50}, "SEEK;FLEE;INTERCEPT;PURSUE;EVADE", &BehaviorValue_, bBehaviorDropdownEdit_))
 		{
 			bBehaviorDropdownEdit_ = !bBehaviorDropdownEdit_;
 		}

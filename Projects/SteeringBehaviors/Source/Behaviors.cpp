@@ -50,6 +50,16 @@ Vec2 PursuitBehavior::GetSteeringForce(const SteeringData& Data)
 	return ForceToApply;
 }
 
+Vec2 EvasionBehavior::GetSteeringForce(const SteeringData& Data)
+{
+	const Vec2 TargetFuture = Data.TargetPosition + Data.TargetVelocity * SL_AGENT_INTERCEPT_LOOKAHEAD;
+
+	FleeBehavior Flee;
+	const Vec2 ForceToApply = Flee.GetSteeringForce({Data.AgentPosition, Data.AgentVelocity, TargetFuture, Data.TargetVelocity});
+
+	return ForceToApply;
+}
+
 Vec2 ArriveBehavior::GetSteeringForce(const SteeringData& Data)
 {
 	const Vec2& AgentVelocity = Data.AgentVelocity;
