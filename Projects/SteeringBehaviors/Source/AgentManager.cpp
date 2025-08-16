@@ -19,6 +19,7 @@ AgentManager::AgentManager(const Vec2& Bounds)
 	Behaviors_.insert({EBehaviorIndex::INTERCEPT, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new InterceptBehavior())});
 	Behaviors_.insert({EBehaviorIndex::PURSUE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new PursuitBehavior())});
 	Behaviors_.insert({EBehaviorIndex::EVADE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new EvasionBehavior())});
+	Behaviors_.insert({EBehaviorIndex::WANDER, std::unique_ptr<WanderingBehavior, BehaviorDeleter>(new WanderingBehavior())});
 }
 
 void AgentManager::Update(const float DeltaTime)
