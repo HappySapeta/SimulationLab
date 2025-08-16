@@ -49,6 +49,12 @@ namespace SL
 			return Vec2{x / Length, y / Length};
 		}
 
+		float GetHeadingAngle() const
+		{
+			const Vec2 Heading = GetNormal();
+			return std::atan2f(Heading.y, Heading.x);
+		}
+
 		void Normalize(const double Tolerance = 0.00001)
 		{
 			*this = GetNormal(Tolerance);
