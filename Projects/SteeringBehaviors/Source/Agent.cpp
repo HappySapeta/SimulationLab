@@ -13,12 +13,15 @@ static Vec2 TriangleVertices[]
 void Agent::AddForce(const Vec2 Force)
 {
 	NetForce_ += Force;
-	NetForce_ = NetForce_.GetNormal() * std::min(SL_AGENT_MAXFORCE, NetForce_.GetLength());
 }
 
 void Agent::Update(const float DeltaTime)
 {
+	NetForce_ = NetForce_.GetNormal() * std::min(SL_AGENT_MAXFORCE, NetForce_.GetLength());
+	
 	Velocity_ = Velocity_ + NetForce_ * DeltaTime;
+	Velocity_ = Velocity_.GetNormal() * std::min(Velocity_.GetLength(), SL_AGENT_MAXSPEED);
+	
 	Position_ = Position_ + Velocity_ * DeltaTime;
 	NetForce_ = Vec2{0, 0};
 }
