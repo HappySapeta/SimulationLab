@@ -78,8 +78,8 @@ Vec2 WanderingBehavior::GetSteeringForce(const SteeringData& Data)
 	std::random_device RandomDevice;
 	std::mt19937 Generator(RandomDevice());
 	std::uniform_real_distribution<float> Distribution(-PI/8, PI/8);
-
-	RandomAngle = RandomAngle + Distribution(Generator);
+	
+	RandomAngle += Distribution(Generator);
 	const float PosX = SL_AGENT_WANDER_RADIUS * std::cos(RandomAngle);
 	const float PosY = SL_AGENT_WANDER_RADIUS * std::sin(RandomAngle);
 	const Vec2 RandomPos = Vec2{PosX, PosY} + Data.AgentPosition + (Data.AgentVelocity.GetNormal() * SL_AGENT_WANDER_RADIUS);

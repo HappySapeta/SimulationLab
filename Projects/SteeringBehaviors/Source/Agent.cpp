@@ -1,5 +1,4 @@
 ﻿#include "Agent.h"
-#include <raylib/raylib.h>
 #include "AgentConfiguration.h"
 #include "Behaviors.h"
 
@@ -29,13 +28,13 @@ void Agent::Update(const float DeltaTime)
 void Agent::Draw()
 {
 	const Vec2 Direction = Velocity_.GetNormal();
-	float Angle = atan2(Direction.y , Direction.x);
-	static auto Rotate = [](const Vec2& V, const float Angle) -> Vec2
+	float Angle = atan2f(Direction.y, Direction.x);
+	static auto Rotate = [](const Vec2& V, const float Theta) -> Vec2
 	{
 		return
 		{
-			V.x * cos(Angle) - V.y * sin(Angle),
-			V.x * sin(Angle) + V.y * cos(Angle)
+			V.x * cos(Theta) - V.y * sin(Theta),
+			V.x * sin(Theta) + V.y * cos(Theta)
 		};
 	};
 	Vec2 V1 = Rotate(TriangleVertices[0], Angle) * SL_AGENT_SIZE + Position_;
