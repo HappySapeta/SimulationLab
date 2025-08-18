@@ -49,6 +49,13 @@ void AgentManager::Update(const float DeltaTime)
 					Force += ArriveBehavior::GetSteeringForce(Pursue->GetPursuitData());
 				}
 			}
+			if (CurrentBehaviorIndex_ == EBehaviorIndex::INTERCEPT)
+			{
+				if (InterceptBehavior* Intercept = dynamic_cast<InterceptBehavior*>(CurrentBehavior_))
+				{
+					Force += ArriveBehavior::GetSteeringForce(Intercept->GetInterceptionData());
+				}
+			}
 			else if (CurrentBehaviorIndex_ != EBehaviorIndex::FLEE)
 			{
 				Force += ArriveBehavior::GetSteeringForce(Data);

@@ -34,7 +34,11 @@ public:
 class InterceptBehavior : public SteeringBehaviorBase
 {
 public:
+	SteeringData GetInterceptionData() const { return InterceptionData_; }
 	virtual Vec2 GetSteeringForce(const SteeringData& Data) override;
+
+private:
+	SteeringData InterceptionData_;
 };
 
 class PursuitBehavior : public SteeringBehaviorBase
