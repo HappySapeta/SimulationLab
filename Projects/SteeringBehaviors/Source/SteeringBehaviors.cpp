@@ -14,7 +14,7 @@ int main()
         BeginDrawing();
         {
             GUI.Draw();
-            Manager.SetCurrentScene(ToBehaviorIndex(GUI.GetBehaviorValue()));
+            Manager.ChangeScene(ToBehaviorIndex(GUI.GetBehaviorValue()));
             Manager.Update(GetFrameTime());
         }
         EndDrawing();

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Agent.h"
 #include "Target.h"
 #include "Core/WindowConfiguration.h"
 #include "SteeringGUI.h"
@@ -6,6 +7,7 @@
 #include <unordered_map>
 #include <memory>
 
+class SceneInterface;
 class SteeringBehaviorBase;
 
 enum class EBehaviorIndex : uint8_t
@@ -31,33 +33,31 @@ inline EBehaviorIndex ToBehaviorIndex(const int Index)
 	return Behavior;
 }
 
-struct BehaviorDeleter
+struct SceneDeleter
 {
-	void operator()(SteeringBehaviorBase* Ptr);
+	void operator()(SceneInterface* Ptr);
 };
 
 class AgentManager
 {
 public:
-	AgentManager(const Vec2& Bounds);
+	
+	AgentManager(const Vec2& Bounds)
+		: Bounds_(Bounds)
+	{}
 	
 	void Update(float DeltaTime);
-	void SpawnAgent();
-	void SetCurrentScene(EBehaviorIndex Behavior);
-	void SetArriveBehavior(bool bUseArriveBehavior) { bUseArriveBehavior_ = bUseArriveBehavior; }
-	void SetTargetMovementMode(int ModeAsInt);
+	void ChangeScene(const EBehaviorIndex BehaviorIndex);
+	std::weak_ptr<Agent> SpawnAgent();
+	std::weak_ptr<Target> SpawnTarget();
 
 private:
 	void BoundaryLooper();
-	void SpawnAgent(const Vec2& Position);
 
 private:
 	Vec2 Bounds_;
-	SteeringBehaviorBase* CurrentBehavior_;
-	std::unordered_map<EBehaviorIndex, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>> Behaviors_;
-	bool bUseArriveBehavior_ = false;
-	
-private:
-	Agent Agent_;
-	Target Target_;
+	EBehaviorIndex CurrentSceneIndex_ = EBehaviorIndex::NONE;
+	std::unique_ptr<SceneInterface, SceneDeleter> CurrentScene_;
+	std::vector<std::shared_ptr<Agent>> Agents_;
+	std::vector<std::shared_ptr<Target>> Targets_;
 };

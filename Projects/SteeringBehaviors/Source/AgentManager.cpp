@@ -1,68 +1,100 @@
 ﻿#include "AgentManager.h"
 #include "Behaviors.h"
-#include "Core/WindowConfiguration.h"
+#include "BehaviorScene.h"
 
 #include <cassert>
 
-void BehaviorDeleter::operator()(SteeringBehaviorBase* Ptr)
+std::weak_ptr<Agent> AgentManager::SpawnAgent()
 {
-	delete Ptr;
+	Agents_.push_back(std::make_shared<Agent>());
+	return Agents_.back();
 }
 
-AgentManager::AgentManager(const Vec2& Bounds)
-	: CurrentBehavior_(nullptr), Bounds_(Bounds)
+std::weak_ptr<Target> AgentManager::SpawnTarget()
 {
-	Target_.SetPosition({SL_WINDOW_WIDTH / 2, SL_WINDOW_HEIGHT / 2});
+	Targets_.push_back(std::make_shared<Target>());
+	return Targets_.back();	
+}
 
-	Behaviors_.insert({EBehaviorIndex::SEEK, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new SeekBehavior())});
-	Behaviors_.insert({EBehaviorIndex::FLEE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new FleeBehavior())});
-	Behaviors_.insert({EBehaviorIndex::INTERCEPT, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new InterceptBehavior())});
-	Behaviors_.insert({EBehaviorIndex::PURSUE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new PursuitBehavior())});
-	Behaviors_.insert({EBehaviorIndex::EVADE, std::unique_ptr<SteeringBehaviorBase, BehaviorDeleter>(new EvasionBehavior())});
-	Behaviors_.insert({EBehaviorIndex::WANDER, std::unique_ptr<WanderingBehavior, BehaviorDeleter>(new WanderingBehavior())});
+void AgentManager::ChangeScene(const EBehaviorIndex BehaviorIndex)
+{
+	if (CurrentSceneIndex_ == BehaviorIndex)
+	{
+		return;
+	}
+
+	CurrentSceneIndex_ = BehaviorIndex;
+	if (CurrentScene_)
+	{
+		Agents_.clear();
+		Targets_.clear();
+		CurrentScene_.reset();
+	}
+	
+	switch (BehaviorIndex)
+	{
+		case EBehaviorIndex::SEEK :
+		{
+			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new SeekScene());
+			break;
+		}
+		case EBehaviorIndex::FLEE :
+		{
+			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new FleeScene());
+			break;
+		}
+		case EBehaviorIndex::INTERCEPT :
+		{
+			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new InterceptScene());
+			break;
+		}
+		case EBehaviorIndex::PURSUE :
+		{
+			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new PursueScene());
+			break;
+		}
+		case EBehaviorIndex::EVADE :
+		{
+			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new EvadeScene());
+			break;
+		}
+		case EBehaviorIndex::WANDER :
+		{
+			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new WanderScene());
+			break;
+		}
+		default:
+		{
+			return;
+		}
+	}
+
+	if (CurrentScene_)
+	{
+		CurrentScene_->Load(*this);
+	}
 }
 
 void AgentManager::Update(const float DeltaTime)
 {
-	Target_.Update(DeltaTime);
-	Target_.Draw();
-
-	SteeringData Data
+	if (CurrentScene_)
 	{
-		Agent_.GetPosition(),
-		Agent_.GetVelocity(),
-		Target_.GetPosition(),
-		Target_.GetVelocity()
-	};
-	
-	Vec2 Force = CurrentBehavior_->GetSteeringForce(Data);
-
-	if (bUseArriveBehavior_)
-	{
-		if (PursuitBehavior* Pursue = dynamic_cast<PursuitBehavior*>(CurrentBehavior_))
-		{
-			Force += ArriveBehavior::GetSteeringForce(Pursue->GetPursuitData());
-		}
-		if (InterceptBehavior* Intercept = dynamic_cast<InterceptBehavior*>(CurrentBehavior_))
-		{
-			Force += ArriveBehavior::GetSteeringForce(Intercept->GetInterceptionData());
-		}
-		else if (dynamic_cast<FleeBehavior*>(CurrentBehavior_) == nullptr)
-		{
-			Force += ArriveBehavior::GetSteeringForce(Data);
-		}
+		CurrentScene_->Update(*this, DeltaTime);
 	}
-		
-	Agent_.AddForce(Force);
-	Agent_.Update(DeltaTime);
-	Agent_.Draw();
+
+	for (auto Agent : Agents_)
+	{
+		Agent->Draw();
+		Agent->Update(DeltaTime);
+	}
+
+	for (auto Target : Targets_)
+	{
+		Target->Draw();
+		Target->Update(DeltaTime);
+	}
 
 	BoundaryLooper();
-}
-
-void AgentManager::SetTargetMovementMode(int ModeAsInt)
-{
-	Target_.SetMovementMode(ToMovementMode(ModeAsInt));
 }
 
 void AgentManager::BoundaryLooper()
@@ -76,28 +108,19 @@ void AgentManager::BoundaryLooper()
 
 		return {PosX, PosY};
 	};
-	
-	Agent_.SetPosition(Loop(Agent_.GetPosition()));
-	Target_.SetPosition(Loop(Target_.GetPosition()));
-}
 
-void AgentManager::SpawnAgent()
-{
-	float PosX = (std::rand() / (float)RAND_MAX) * SL_WINDOW_WIDTH;
-	float PosY = (std::rand() / (float)RAND_MAX) * SL_WINDOW_HEIGHT;
-	SpawnAgent({PosX, PosY});
-}
-
-void AgentManager::SpawnAgent(const Vec2& Position)
-{
-	Agent_.SetPosition(Position);
-}
-
-void AgentManager::SetCurrentScene(EBehaviorIndex Behavior)
-{
-	if (Behaviors_.contains(Behavior))
+	for (auto Agent : Agents_)
 	{
-		CurrentBehavior_ = Behaviors_.at(Behavior).get();
-		assert(CurrentBehavior_);
+		Agent->SetPosition(Loop(Agent->GetPosition()));
 	}
+
+	for (auto Target : Targets_)
+	{
+		Target->SetPosition(Loop(Target->GetPosition()));
+	}
+}
+
+void SceneDeleter::operator()(SceneInterface* Ptr)
+{
+	delete Ptr;
 }
