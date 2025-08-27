@@ -25,7 +25,7 @@ class Target : public Agent
 {
 public:
 	virtual ~Target() = default;
-	virtual void SetPosition(const Vec2& NewPosition) override;
+	virtual void SetPosition(const Vec2& NewPosition, const bool bPreserveVelocity = false) override;
 	virtual void Update(const float DeltaTime) override;
 	virtual void Draw() override;
 

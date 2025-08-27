@@ -13,8 +13,9 @@ constexpr float SL_AGENT_INTERCEPT_LOOKAHEAD = 0.5f;
 constexpr float SL_AGENT_PURSUE_RADIUS = 100.0f;
 constexpr float SL_AGENT_WANDER_RADIUS = 50.0f;
 constexpr float SL_AGENT_WANDER_LENGTH = 100.0f;
-constexpr float SL_AGENT_WANDER_CHANGE = PI * 0.1f;
+constexpr float SL_AGENT_WANDER_CHANGE = PI * 0.01f;
 constexpr float SL_AGENT_ARRIVAL_RADIUS = 50.0f;
+constexpr int SL_NUM_WANDERING_AGENTS = 5;
 
 constexpr uint8_t SL_TARGET_SIZE = 20;
 constexpr Color SL_TARGET_COLOR = BLACK;

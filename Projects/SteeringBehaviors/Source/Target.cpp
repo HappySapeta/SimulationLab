@@ -76,10 +76,13 @@ void Target::MoveWithMouseClick()
 	}
 }
 
-void Target::SetPosition(const Vec2& NewPosition)
+void Target::SetPosition(const Vec2& NewPosition, const bool bPreserveVelocity)
 {
 	const double CurrentTime = GetTime();
-	Velocity_ = (NewPosition - Position_) / (CurrentTime - LastPositionUpdateTime_);
+	if (!bPreserveVelocity)
+	{
+		Velocity_ = (NewPosition - Position_) / (CurrentTime - LastPositionUpdateTime_);
+	}
 	Position_ = NewPosition;
 	LastPositionUpdateTime_ = CurrentTime;
 }

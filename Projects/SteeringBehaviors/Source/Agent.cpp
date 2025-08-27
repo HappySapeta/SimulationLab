@@ -16,7 +16,7 @@ void Agent::AddForce(const Vec2 Force)
 
 void Agent::Update(const float DeltaTime)
 {
-	NetForce_ = NetForce_.GetNormal() * std::min(SL_AGENT_MAXFORCE, NetForce_.GetLength());
+	NetForce_ = NetForce_.GetNormal() * std::min(NetForce_.GetLength(), SL_AGENT_MAXFORCE);
 	
 	Velocity_ = Velocity_ + NetForce_ * DeltaTime;
 	Velocity_ = Velocity_.GetNormal() * std::min(Velocity_.GetLength(), SL_AGENT_MAXSPEED);

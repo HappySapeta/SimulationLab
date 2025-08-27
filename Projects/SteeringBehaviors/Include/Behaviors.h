@@ -106,8 +106,15 @@ public:
 	static Vec2 Evade(const SteeringData& Data)
 	{
 		const Vec2 TargetFuture = Data.TargetPosition + Data.TargetVelocity * SL_AGENT_INTERCEPT_LOOKAHEAD;
-
 		const Vec2 ForceToApply = Flee({Data.AgentPosition, Data.AgentVelocity, TargetFuture, Data.TargetVelocity}, SL_AGENT_FLEE_RADIUS);
+
+#ifdef DRAW_BEHAVIORS
+		{
+			DrawLineV(Data.AgentPosition, TargetFuture, WHITE);
+			DrawCircleV(TargetFuture, 5.0f, YELLOW);
+		}
+#endif
+		
 		if (Vec2::Distance(Data.TargetPosition, Data.AgentPosition) <= SL_AGENT_FLEE_RADIUS)
 		{
 			return ForceToApply;
@@ -116,7 +123,7 @@ public:
 		return {0,0};
 	}
 	
-	static Vec2 Wander(const SteeringData& Data, float& WanderTheta, const float WanderRadius = 100, const float WanderLookahead = 200)
+	static Vec2 Wander(const SteeringData& Data, float& WanderTheta, const float WanderRadius, const float WanderLookahead)
 	{
 		std::random_device RandomDevice;
 		std::mt19937 Generator(RandomDevice());

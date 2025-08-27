@@ -1,5 +1,8 @@
 ﻿#pragma once
+#include "CommonTypes.h"
 #include "Core/GUIHelper.h"
+
+constexpr int SCENE_TEXTSIZE = 20;
 
 class SteeringGUI : public GUIHelper
 {
@@ -9,11 +12,12 @@ public:
 	{}
 	virtual void Draw() override;
 	
-	int GetBehaviorValue() { return BehaviorValue_ + 1; }
-
-private:
-	int BehaviorValue_ = 0;
+	ESceneIndex GetSceneIndex()
+	{
+		return ToSceneIndex(SceneIndex_);
+	}
 	
 private:
 	bool bBehaviorDropdownEdit_ = false;
+	int SceneIndex_ = 0;
 };

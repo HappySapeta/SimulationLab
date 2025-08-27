@@ -16,9 +16,9 @@ std::weak_ptr<Target> AgentManager::SpawnTarget()
 	return Targets_.back();	
 }
 
-void AgentManager::ChangeScene(const EBehaviorIndex BehaviorIndex)
+void AgentManager::ChangeScene(const ESceneIndex BehaviorIndex)
 {
-	if (CurrentSceneIndex_ == BehaviorIndex)
+	if (CurrentSceneIndex_ == BehaviorIndex && CurrentScene_)
 	{
 		return;
 	}
@@ -33,32 +33,32 @@ void AgentManager::ChangeScene(const EBehaviorIndex BehaviorIndex)
 	
 	switch (BehaviorIndex)
 	{
-		case EBehaviorIndex::SEEK :
+		case ESceneIndex::SEEK :
 		{
 			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new SeekScene());
 			break;
 		}
-		case EBehaviorIndex::FLEE :
+		case ESceneIndex::FLEE :
 		{
 			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new FleeScene());
 			break;
 		}
-		case EBehaviorIndex::INTERCEPT :
+		case ESceneIndex::INTERCEPT :
 		{
 			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new InterceptScene());
 			break;
 		}
-		case EBehaviorIndex::PURSUE :
+		case ESceneIndex::PURSUE :
 		{
 			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new PursueScene());
 			break;
 		}
-		case EBehaviorIndex::EVADE :
+		case ESceneIndex::EVADE :
 		{
 			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new EvadeScene());
 			break;
 		}
-		case EBehaviorIndex::WANDER :
+		case ESceneIndex::WANDER :
 		{
 			CurrentScene_ = std::unique_ptr<SceneInterface, SceneDeleter>(new WanderScene());
 			break;
@@ -116,7 +116,7 @@ void AgentManager::BoundaryLooper()
 
 	for (auto Target : Targets_)
 	{
-		Target->SetPosition(Loop(Target->GetPosition()));
+		Target->SetPosition(Loop(Target->GetPosition()), true);
 	}
 }
 
