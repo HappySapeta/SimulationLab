@@ -1,37 +1,15 @@
 ﻿#pragma once
 #include "Agent.h"
 #include "Target.h"
-#include "Core/WindowConfiguration.h"
 #include "SteeringGUI.h"
 
 #include <unordered_map>
 #include <memory>
 
+#include "CommonTypes.h"
+
 class SceneInterface;
 class SteeringBehaviorBase;
-
-enum class EBehaviorIndex : uint8_t
-{
-	NONE,
-	SEEK,
-	FLEE,
-	INTERCEPT,
-	PURSUE,
-	EVADE,
-	WANDER,
-	COUNT
-};
-
-inline EBehaviorIndex ToBehaviorIndex(const int Index)
-{
-	using UnderlyingType = std::underlying_type_t<EBehaviorIndex>;
-	EBehaviorIndex Behavior = Index >= static_cast<UnderlyingType>(EBehaviorIndex::NONE) &&
-							  Index < static_cast<UnderlyingType>(EBehaviorIndex::COUNT)
-								  ? static_cast<EBehaviorIndex>(Index)
-								  : EBehaviorIndex::NONE;
-
-	return Behavior;
-}
 
 struct SceneDeleter
 {
@@ -47,7 +25,7 @@ public:
 	{}
 	
 	void Update(float DeltaTime);
-	void ChangeScene(const EBehaviorIndex BehaviorIndex);
+	void ChangeScene(const ESceneIndex BehaviorIndex);
 	std::weak_ptr<Agent> SpawnAgent();
 	std::weak_ptr<Target> SpawnTarget();
 
@@ -56,7 +34,7 @@ private:
 
 private:
 	Vec2 Bounds_;
-	EBehaviorIndex CurrentSceneIndex_ = EBehaviorIndex::NONE;
+	ESceneIndex CurrentSceneIndex_ = ESceneIndex::SEEK;
 	std::unique_ptr<SceneInterface, SceneDeleter> CurrentScene_;
 	std::vector<std::shared_ptr<Agent>> Agents_;
 	std::vector<std::shared_ptr<Target>> Targets_;

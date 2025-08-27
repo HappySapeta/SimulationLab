@@ -2,6 +2,7 @@
 #include "AgentManager.h"
 
 #include "Behaviors.h"
+#include "Core/WindowConfiguration.h"
 
 void SeekScene::Load(AgentManager& Manager)
 {
@@ -146,7 +147,7 @@ void InterceptScene::Load(AgentManager& Manager)
 
 	Target_ = Manager.SpawnTarget();
 	Target_.lock()->SetPosition({SL_WINDOW_WIDTH / 2, SL_WINDOW_HEIGHT / 2});
-	Target_.lock()->SetMovementMode(EMovementMode::CIRCLE);
+	Target_.lock()->SetMovementMode(EMovementMode::XAXIS);
 }
 
 void InterceptScene::Update(AgentManager& Manager, const float DeltaTime)
@@ -162,7 +163,7 @@ void InterceptScene::Update(AgentManager& Manager, const float DeltaTime)
 			TargetPtr->GetPosition(),
 			TargetPtr->GetVelocity()
 		};
-		const Vec2 Force = Behaviors::Intercept(Data, SL_AGENT_INTERCEPT_LOOKAHEAD * 5);
+		const Vec2 Force = Behaviors::Intercept(Data, SL_AGENT_INTERCEPT_LOOKAHEAD);
 		
 		AgentPtr->AddForce(Force);
 	}
@@ -170,10 +171,10 @@ void InterceptScene::Update(AgentManager& Manager, const float DeltaTime)
 
 void WanderScene::Load(AgentManager& Manager)
 {
-	for (int Count = 0; Count < 1; ++Count)
+	for (int Count = 0; Count < SL_NUM_WANDERING_AGENTS; ++Count)
 	{
-		float PosX = SL_WINDOW_WIDTH / 2;//(std::rand() / (float)RAND_MAX) * SL_WINDOW_WIDTH;
-		float PosY = 0;//(std::rand() / (float)RAND_MAX) * SL_WINDOW_HEIGHT;
+		float PosX = (std::rand() / (float)RAND_MAX) * SL_WINDOW_WIDTH;
+		float PosY = (std::rand() / (float)RAND_MAX) * SL_WINDOW_HEIGHT;
 		Agents_.emplace_back(Manager.SpawnAgent());
 		Agents_.back().lock()->SetPosition({PosX, PosY});
 
@@ -183,17 +184,17 @@ void WanderScene::Load(AgentManager& Manager)
 
 void WanderScene::Update(AgentManager& Manager, const float DeltaTime)
 {
-	int Index = 0;
-	for (auto AgentX : Agents_)
+	for (int Index = 0; Index < Agents_.size(); ++Index)
 	{
-		if (!AgentX.expired())
+		if (Agents_[Index].expired())
 		{
-			Agent* AgentPtr = AgentX.lock().get();
-			const SteeringData Data{AgentPtr->GetPosition(), AgentPtr->GetVelocity(), {0,0}, {0,0}};
-			
-			const Vec2 Force = Behaviors::Wander(Data, WanderThetas_[Index++], SL_AGENT_WANDER_RADIUS, SL_AGENT_WANDER_LENGTH);
-			AgentPtr->AddForce(Force);
+			continue;
 		}
+		
+		Agent* AgentPtr = Agents_[Index].lock().get();
+		const SteeringData Data{AgentPtr->GetPosition(), AgentPtr->GetVelocity(), {0,0}, {0,0}};
+		const Vec2 Force = Behaviors::Wander(Data, WanderThetas_[Index], SL_AGENT_WANDER_RADIUS, SL_AGENT_WANDER_LENGTH);
+		AgentPtr->AddForce(Force);
 	}
 }
 
