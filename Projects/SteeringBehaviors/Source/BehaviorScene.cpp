@@ -137,6 +137,18 @@ void PursueScene::Update(AgentManager& Manager, const float DeltaTime)
 		Force += Behaviors::Arrive({Data.AgentPosition, Data.AgentVelocity, PursueTarget, {0,0}}, SL_AGENT_ARRIVAL_RADIUS * 5);
 
 		AgentPtr->AddForce(Force);
+
+		// GUI customization
+		{
+			constexpr float FontSize = 20;
+			const std::string HintText = "click and drag";
+			const float TextSize = MeasureText(HintText.c_str(), FontSize);
+			
+			const Vec2 TargetPos = TargetPtr->GetPosition();
+			const Vec2 TextPos{TargetPos.x - TextSize / 2, TargetPos.y + SL_TARGET_SIZE + 10};
+
+			DrawText(HintText.c_str(), TextPos.x, TextPos.y, FontSize, GRAY);
+		}
 	}
 }
 
@@ -197,4 +209,3 @@ void WanderScene::Update(AgentManager& Manager, const float DeltaTime)
 		AgentPtr->AddForce(Force);
 	}
 }
-
