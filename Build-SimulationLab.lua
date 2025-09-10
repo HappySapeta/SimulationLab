@@ -32,3 +32,4 @@ include "Projects/Core/Build-Core.lua"
 include "Projects/WelcomeProject/Build-WelcomeProject.lua"
 
 include "Projects/SteeringBehaviors/Build-SteeringBehaviors.lua"
+include "Projects/FiniteStateMachine/Build-FiniteStateMachine.lua"
